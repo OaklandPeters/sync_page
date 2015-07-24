@@ -1,6 +1,6 @@
 sync_page
 ================
-Overlays `sync_media.py`, to run on all media resources in a page.
+Overlays `sync_media.py`, to run on all media resources in a page. Intended for use with local Django development servers for The Atlantic.
 
 Examples
 --------------
@@ -19,13 +19,18 @@ Metafunctions used for generic flow control and function building.
 
 sync_page.py
 --------------
+Command-line interface and main function. By passing `main(local_url)`, it will find all of the resources in the page and download them by calling `sync_media.py`.
+
 This is written in a functional pipeline style, which grafts together a bunch of very small functions. This has a lot of benefits for debugging and refactoring, but it is not commonly used in Python, so I'm a little embarrased to let anyone set it.
 
 If you become determined to read `sync_page.py`, then:
+
 - '>>' means 'Compose the previous function and the next function'. Hence the following are equivalent::
+```
     allfuncs = Chainable(func1) >> func2 >> func3
     # Equivalent
     def allfuncs(*args, **kwargs):
         return func3(func2(func1(*args, **kwargs)))
-- The ":: Type" comments at the end of lines refer to the type of output from that line. Useful for keeping track of what's going on in a chain of functions.
+```
+- The ":: Type" comments at the end of lines refer to the type of output from that line. Useful for keeping track of what's going on in a chain of functions. This greatly resembles the Type Hints from [PEP-0484](https://www.python.org/dev/peps/pep-0484/).
 
